@@ -1,0 +1,2 @@
+--class-path src/hx
+--js target/js/lib.js

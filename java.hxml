@@ -1,0 +1,3 @@
+--java target/java
+--library hxjava
+--class-path src/hx
