@@ -1,5 +1,6 @@
 package monaxe;
 
+import monaxe.SafeObserver.Safe;
 import monaxe.Cancellable.CancelFunction;
 
 class Observable<T> {
@@ -10,11 +11,7 @@ class Observable<T> {
     }
 
     public function subscribe(observer: Observer<T>): CancelFunction<T>{
-        return this.doSub(new SafeObserver(observer));
-    }
-
-    public function asSingle(){
-        return new SingleSubscriptionObservable(this.doSub);
+        return this.doSub(Safe.protect(observer));
     }
 
     public function concat(next: Observable<T>){
@@ -33,21 +30,5 @@ class Observable<T> {
                 obs.onComplete();
             };
         });
-    }
-}
-
-class SingleSubscriptionObservable<T> extends Observable<T>{
-    var isSubscribed: Bool;
-
-    public function new(subFn: Observer<T> -> CancelFunction<T>){
-        super(subFn);
-        this.isSubscribed = false;
-    }
-
-    override public function subscribe(observer: Observer<T>){
-        return if (isSubscribed) {
-            Cancellable.cancelled;
-        }
-        else super.subscribe(observer);
     }
 }
