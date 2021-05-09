@@ -1,4 +1,7 @@
-package monaxe;
+package monaxe.reactive;
+
+import monaxe.execution.Cancel;
+import monaxe.reactive.observer.*;
 
 abstract Observer<T>(Observe<T>){
     public inline function new(o: Observe<T>){

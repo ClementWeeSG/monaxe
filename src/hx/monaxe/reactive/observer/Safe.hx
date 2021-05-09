@@ -1,4 +1,4 @@
-package monaxe;
+package monaxe.reactive;
 
 class Safe{
     public static function protect<T>(unsafe: Observer<T>): Observe<T>{

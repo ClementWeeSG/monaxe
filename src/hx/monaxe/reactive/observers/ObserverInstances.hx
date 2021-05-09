@@ -1,4 +1,4 @@
-package monaxe.observers;
+package monaxe.reactive.observers;
 
 class ObserverInstances {
     var traceO: Observe<Void> =  evt -> switch evt {

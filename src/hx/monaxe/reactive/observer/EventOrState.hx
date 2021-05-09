@@ -1,4 +1,4 @@
-package monaxe;
+package monaxe.reactive.observer;
 
 enum EventOrState<T> {
     Start;
