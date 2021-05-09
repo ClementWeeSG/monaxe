@@ -1,7 +1,7 @@
-package monaxe.reactive;
+package monaxe.reactive.observer;
 
 class Safe{
-    public static function protect<T>(unsafe: Observer<T>): Observe<T>{
+    public static function protect<T>(unsafe: Observer<T>): Observer<T>{
         var isComplete = false;
         return (es: EventOrState<T>) -> {
 
