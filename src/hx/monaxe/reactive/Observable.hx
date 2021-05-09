@@ -22,7 +22,7 @@ abstract Observable<T>(Subscribe<T>){
         return new Observable<U>(unsafe);
     }
 
-    public function map<U>(fn: T -> U){
+    public function map<U>(fn: T -> U): Observable<U>{
         return (obs: Observer<U>) -> {
 
             return subscribe( (event: EventOrState<T>) ->
