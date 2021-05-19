@@ -1,5 +1,8 @@
 package monaxe.reactive;
 
+import monaxe.reactive.observable.*;
+import haxe.ds.Vector;
+import monaxe.execution.Pair;
 import monaxe.reactive.observable.CancelInstances;
 import monaxe.execution.Cancellable;
 import monaxe.reactive.observer.Safe;
@@ -12,7 +15,7 @@ abstract Observable<T>(Subscribe<T>){
         this = unsafe;
     }
 
-    public function subscribe(client: Observer<T>): Cancellable{
+    public function subscribe(client: Observer<T>): Subscription<T>{
         var protected: Observer<T> = Safe.protect(client);
         return this(protected);
     }
@@ -25,15 +28,7 @@ abstract Observable<T>(Subscribe<T>){
     public function map<U>(fn: T -> U): Observable<U>{
         return (obs: Observer<U>) -> {
 
-            return subscribe( (event: EventOrState<T>) ->
-            switch event {
-                case Event(data): obs.onData(fn(data));
-                case Start: obs.onStart;
-                case Error(msg): obs.onError(msg);
-                case Complete: obs.onComplete();
-            }
-
-            );
+            return null;
 
         }
     }
@@ -41,13 +36,63 @@ abstract Observable<T>(Subscribe<T>){
     //factories
 
     static public function fromArray<T>(arr: Array<T>): Observable<T>{
-    return (obs: Observer<T>) -> {
-        iterate(obs, arr, obs.onComplete);
-        return {
-            cancel: CancelInstances.cannotCancel(obs)
-        }
+    return (obs: Observer<T>) -> new ArraySubscription<T>(arr);
+}
+
+/**
+ * Return an Observable that only provides a single element, then completes
+ * @param item the item to put inside the Observable
+ */
+static public function fromSingle<T>(item: T): Observable<T>{
+        return (obs: Observer<T>) -> {
+            var s = new SingleSubscription(item);
+            s.requestAll(obs);
+            s;
     }
 
+    
+
+    }
+
+    /**
+     * Create an Observable of type T linked to a Source.
+     * @src The source to link to 
+     */
+    static public function link<T>(src: Source<T>):Observable<T>{
+        //var id = -1;
+        var subscribers = new List<Observer<T>>();
+        src.onData = eod -> {
+            for (s in subscribers){
+                 s.onData(eod);
+             }
+        };
+        src.onComplete = () -> {
+            for (s in subscribers){
+                s.onComplete();
+            }
+        };
+        src.onError = msg -> {
+            for (s in subscribers){
+                s.onError(msg);
+            }
+        }
+        return ((obs: Observer<T>) -> {
+            subscribers.add(obs);
+            null;
+        });
+    }
+
+    static public function singleSubscription<T>(observable: Observable<T>): Observable<T>{
+        var isSubscribed = false;
+        return (obs: Observer<T>) -> {
+            if(isSubscribed){
+                obs.onError("Source cannot be subscribed twice!");
+                null;
+            } else {
+                isSubscribed = true;
+                observable.subscribe(obs);
+            }
+        }
     }
     
 
