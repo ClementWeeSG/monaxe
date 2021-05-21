@@ -1,0 +1,5 @@
+-cp src/hx
+-cp src/test
+-lib utest
+-main TestMain
+-x TestMain
