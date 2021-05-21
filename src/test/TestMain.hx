@@ -1,12 +1,10 @@
-package src.test;
-
 import monaxe.reactive.Observable;
 
 import utest.Assert;
 
-class Main {
+class TestMain {
 	static function main() {
-		utest.UTest.run([new TestCase(), new TestCase2(), new tests.TestCase(), new TestCase3()]);
+		utest.UTest.run([new TestCase(), new TestCase2()]);
 	}
 }
 

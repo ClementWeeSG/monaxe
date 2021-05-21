@@ -26,6 +26,6 @@ class ArraySubscription<T> implements Subscription<T>{
     }
 
 	public function cancel(obs:Observer<T>) {
-        obs.onError("This subscription cannot be cancelled!")
+        obs.onError("This subscription cannot be cancelled!");
     }
 }

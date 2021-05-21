@@ -1,0 +1,36 @@
+{
+	"TestCase2": {
+		"pos": {
+			"line": 30,
+			"file": "src/test/TestMain.hx"
+		},
+		"methods": {
+			"testSuccess": {
+				"line": 31
+			}
+		}
+	},
+	"TestCase": {
+		"pos": {
+			"line": 10,
+			"file": "src/test/TestMain.hx"
+		},
+		"methods": {
+			"testError": {
+				"line": 20
+			},
+			"testSuccess": {
+				"line": 11
+			},
+			"testFailure": {
+				"line": 15
+			},
+			"testIgnore": {
+				"line": 27
+			},
+			"testEmpty": {
+				"line": 24
+			}
+		}
+	}
+}
