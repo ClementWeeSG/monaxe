@@ -26,3 +26,21 @@ var obs: Observer<T> = {
 } 
 ```
 
+###subscription
+
+```
+enum Command {
+    Data(num_items)
+    Stop
+}
+
+typedef Request = Command -> Void
+
+abstract Subscription(Request){
+    function requestOne()
+    function requestAll()
+    function cancel();
+}
+```
+
+
