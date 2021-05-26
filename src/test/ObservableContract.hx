@@ -11,7 +11,7 @@ class ObservableContract{
 
             switch es {
                 case Complete: 
-                    Assert.isFalse(isComplete);
+                    Assert.isFalse(isComplete); // Observable can only terminate once.
                     isComplete = true;
                 case Start: 
                     Assert.isFalse(isComplete);
