@@ -1,15 +1,15 @@
 #README
 
-Monaxe is a reactive library for Haxe inspired by the Monix Library for Scala
+Monaxe is a ReactiveX library for Haxe inspired by the Monix Library for Scala
 
 ##Aim
 
-To replicate the Task and Observable functions of the Monix library in a Haxe-friendly way.
+To implement a native Haxe implementation of ReactiveX
 
 ##Functionality Targeted For First Iteration
 
-Observer (Sync Version)
+Observable Contract
+Observable.Create
 Observable.map
-Observable.flatMap
 
 Observable and Observer as Abstracts
