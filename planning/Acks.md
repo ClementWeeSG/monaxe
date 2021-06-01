@@ -1,4 +1,4 @@
-###Ack
+### Ack
 
 Ack is the response telling the Observable to go ahead or stop sending elements
 
@@ -23,7 +23,7 @@ observer.onNext = function(){
 }
 ```
 
-###Observable Loop
+### Observable Loop
 
 ```
 fn(observer, lastAck = Continue){

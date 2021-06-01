@@ -1,4 +1,4 @@
-###Observable contract
+### Observable contract
 
 Observable subscribes a source to an observer
 
@@ -15,7 +15,7 @@ Observer -> contains _start_, _data_ and _complete_ callbacks
 
 Subscription may be cancelled
 
-###link
+### link
 
 ```
 var obs: Observer<T> = {
@@ -26,7 +26,7 @@ var obs: Observer<T> = {
 } 
 ```
 
-###subscription
+### subscription
 
 ```
 enum Command {
