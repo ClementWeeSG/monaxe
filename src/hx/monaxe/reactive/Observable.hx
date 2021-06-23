@@ -70,6 +70,7 @@ abstract Observable<T>(Subscribe<T>){
 
     //factories
 
+    @:from    
     static public function fromArray<T>(arr: Array<T>): Observable<T>{
         return (obs: Observer<T>) -> return {
             obs.onStart();
