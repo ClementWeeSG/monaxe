@@ -1,3 +1,5 @@
 --java target/java
 --library hxjava
+--library utest
 --class-path src/hx
+--class-path src/test
