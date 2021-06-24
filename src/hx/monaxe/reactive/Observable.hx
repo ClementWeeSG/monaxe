@@ -82,6 +82,7 @@ abstract Observable<T>(Subscribe<T>){
         };
     }
 
+    @:from
     static public function fromSingle<T>(item: T): Observable<T>{
         return (obs: Observer<T>) -> return {
             obs.onStart();

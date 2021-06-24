@@ -3,7 +3,7 @@ import monaxe.reactive.observer.EventOrState;
 import utest.Assert;
 
 class ObservableContract{
-    public static function instance<T>(): Observer<T>{
+    public static function newInstance<T>(async: utest.Async): Observer<T>{
         var isComplete = false;
         var isConnected = false;
 
@@ -13,6 +13,7 @@ class ObservableContract{
                 case Complete: 
                     Assert.isFalse(isComplete); // Observable can only terminate once.
                     isComplete = true;
+                    async.done();
                 case Start: 
                     Assert.isFalse(isComplete);
                     Assert.isFalse(isConnected);
@@ -23,6 +24,8 @@ class ObservableContract{
                 case Error(_):
                     if(!isComplete) {
                         isComplete = true;
+                        Assert.isTrue(isComplete);
+                        async.done();
                     }                
             }
 
