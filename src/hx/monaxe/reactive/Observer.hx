@@ -28,4 +28,14 @@ abstract Observer<T>(Observe<T>){
     inline public function onError(msg: String){
         this(Error(msg));
     }
+
+    static public function noStart<T>(base: Observer<T>): Observer<T>{
+        function doNothing(){}
+        return evt -> switch evt {
+            case Start: doNothing();
+            case Event(item): base.onData(item);
+            case Complete: base.onComplete();
+            case Error(msg): base.onError(msg);
+        }
+    }
 }

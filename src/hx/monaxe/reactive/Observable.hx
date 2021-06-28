@@ -42,10 +42,10 @@ abstract Observable<T>(Subscribe<T>){
         return (downS: Observer<T>) -> {
             var serial = new SerialAssignCancellable();
             serial.assign(subscribe((evt) -> return switch (evt) {
-                case Start: downS.onStart;
+                case Start: downS.onStart();
                 case Event(item): downS.onData(item);
                 case Error(msg): downS.onError(msg);
-                case Complete: serial.assign(next.subscribe(downS));
+                case Complete: serial.assign(next.subscribe(Observer.noStart(downS)));
             }));
             return serial;
         };
