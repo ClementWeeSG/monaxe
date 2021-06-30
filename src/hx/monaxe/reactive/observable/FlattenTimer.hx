@@ -1,5 +1,6 @@
 package monaxe.reactive.observable;
 
+import monaxe.execution.MultiAssignCancellable;
 import haxe.ds.List;
 import monaxe.reactive.observer.EventOrState;
 import monaxe.execution.SerialAssignCancellable;
@@ -42,6 +43,13 @@ class FlattenTimer<T> extends haxe.Timer {
     }
 
     public function getCancellable(){
-        return cancellable;
+        return {
+            cancel: () -> this.cancel()
+        }
+    }
+
+    public function cancel(){
+        this.stop();
+        this.cancellable.cancel();
     }
 }
