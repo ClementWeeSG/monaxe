@@ -8,6 +8,12 @@ In General, it aims to implement the following APIs:
 - monix.eval.Task
 - monix.reactive.Consumer
 
+# Why Monaxe for Haxe?
+
+Haxe libraries for async support tend to base themselves off JavaScript idioms, like Promises. Unfortunately, Promises are a somewhat Javascript-specific idiom, and follow an API that looks awkward to developers from Java or other backgrounds (like yours truly).
+
+# Monaxe & Monix
+
 The public APIs follow Monix closely, with some allowances for special Haxe functions that provide as-elegant or more elegant ways to achieve what Monix uses in Scala to achieve the same effect.
 
 ## Abstracts
@@ -66,7 +72,7 @@ In Monaxe, `Observer` is an Abstract declared over a function that takes in an `
 
 (_Note: The `Ack` API is not implemented yet_)
 
-## Functionality implemented in First Implementation
+## Functionality in First Iteration
 
 ### Generating Observables
 ```haxe
@@ -93,6 +99,7 @@ However, it is pure-haxe, so theoretically may be used on any of the seven platf
 Monaxe is built on Haxe 4.2.1.
 
 # TODO
+- Completing the Observable functions
 - Implementing Coeval
 - Implementing Task
 - Implementing the Consumer API
