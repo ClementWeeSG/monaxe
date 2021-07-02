@@ -1,0 +1,11 @@
+{
+    "name": "monaxe",
+    "url" : "https://github.com/ClementWeeSG/monaxe",
+    "license": "MIT",
+    "tags": ["async", "cross","utility"],
+    "description": "A cross-platform implementation of ReactiveX for Haxe (4.x)",
+    "version": "0.0.1-alpha",
+    "classPath": "src/hx",
+    "releasenote": "First iteration",
+    "contributors": ["ClementWeeSG"]
+  }
