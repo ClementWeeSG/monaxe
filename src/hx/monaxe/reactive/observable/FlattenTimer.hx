@@ -1,10 +1,7 @@
 package monaxe.reactive.observable;
 
-import monaxe.execution.MultiAssignCancellable;
-import haxe.ds.List;
 import monaxe.reactive.observer.EventOrState;
 import monaxe.execution.SerialAssignCancellable;
-import monaxe.execution.Cancellable;
 
 class FlattenTimer<T> extends haxe.Timer {
     var cancellable: SerialAssignCancellable;
@@ -17,25 +14,37 @@ class FlattenTimer<T> extends haxe.Timer {
     public function new(downS: Observer<T>, parent: Flatten<T>){
         super(100);
         this.cancellable = new SerialAssignCancellable();
+        this.downS = downS;
+        this.downS.onStart();
         isChildComplete = true;
         this.advanceObs = (evt: EventOrState<T>) -> switch evt {
-            case Start: isChildComplete = false;
-            case Event(e): downS.onData(e);
+            case Start: trace("Starting new Child");
+            case Event(e): trace(e);downS.onData(e);
             case Error(msg): downS.onError(msg);
-            case Complete: isChildComplete = true;
+            case Complete: isChildComplete = true; trace("completed child");
         }
         this.nextChild = null;
         this.parent = parent;
     }
 
     override public function run(){ // a polling function
+        trace("tick");
         if(isChildComplete){
+            trace("Child Complete");
+            trace(this.parent.isComplete);
             nextChild = this.parent.gatheredObservables.pop();
-            if(nextChild!=null)  cancellable.assign(nextChild.subscribe(advanceObs));
+            trace(this.parent.gatheredObservables.length);
+            if(nextChild!=null) {
+                isChildComplete = false;
+                trace("NEXT CHILD");
+                cancellable.assign(nextChild.subscribe(advanceObs));
+            } 
             else {
+                trace("No more children");
                 if(this.parent.isComplete) {
-                    stop();
-                    downS.onComplete();
+                    this.stop();
+                    trace("parent complete");
+                    this.downS.onComplete();
                 }
                 //else wait for next tick
             }

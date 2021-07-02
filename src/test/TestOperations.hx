@@ -1,4 +1,6 @@
+import haxe.Timer;
 import monaxe.reactive.*;
+import monaxe.reactive.FlattenableObservable;
 import utest.Assert;
 
 class TestOperations extends utest.Test {
@@ -76,6 +78,41 @@ class TestOperations extends utest.Test {
 
 
 	}
+
+	@:timeout(1000)
+	function testFlatten(async: utest.Async){
+		var orig = Observable.fromArray([1,3]);
+		var lifted: FlattenableObservable<Int> = orig.map(single -> Observable.fromSingle(single));
+		var cdate = lifted.flatten();
+		var finalResult = 0;
+
+		//Check Observable Contract
+
+		async.branch(branch -> {
+			var contract: Observer<Int> = ObservableContract.newInstance(branch);
+			cdate.subscribe(contract);
+		});
+
+		//Check operation result
+
+		async.branch( opTest -> {
+			cdate.subscribe( evt -> return switch evt {
+				case Start: finalResult = 0;
+				case Event(num): 
+					trace(num);
+					finalResult+=num;
+				case Complete:
+					Assert.equals(4, finalResult);
+					trace("Test Complete");
+					opTest.done();
+				case Error(msg): 
+					
+				throw msg;
+			});
+		});
+
+
+	}
 	
 	function testFlatMap(async: utest.Async) {
 
@@ -101,7 +138,7 @@ class TestOperations extends utest.Test {
                     results.push(item);	
                     trace(item);		
 				case Complete: 
-					Assert.equals([2,3], results);
+					Assert.equals("2,3", results.join(","));
 					opTest.done();
 				case Error(msg):
 					throw "Shouldn't throw error: " + msg;

@@ -36,8 +36,12 @@ class Flatten<T> {
         return evt -> 
         switch evt {
             case Start: doNothing();
-            case Event(o): this.gatheredObservables.add(o);
-            case Complete: isComplete = true;
+            case Event(o): 
+                trace("Received Child");
+                this.gatheredObservables.add(o);
+            case Complete: 
+                isComplete = true;
+                trace("Is Complete");
             case Error(msg): downS.onError(msg); // pipe errors directly to downStream
         }
     }

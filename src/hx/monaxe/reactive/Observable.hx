@@ -11,6 +11,8 @@ import monaxe.reactive.observer.Safe;
 import monaxe.reactive.observer.EventOrState;
 import monaxe.reactive.observable.Subscribe;
 
+using monaxe.reactive.observable.Flatten;
+
 abstract Observable<T>(Subscribe<T>){
 
     inline public function new(unsafe: Subscribe<T>){
@@ -52,20 +54,7 @@ abstract Observable<T>(Subscribe<T>){
     }
 
     public function flatMap<U>(fn: T -> Observable<U>): Observable<U>{
-        return obs -> {
-            var accum: Observable<U> = empty();
-            var multi = new MultiAssignCancellable();
-            multi.add(subscribe(evt -> {
-                switch (evt){
-                    case Start: obs.onStart();
-                    case Event(e): accum = accum.concat(fn(e));
-                    case Error(msg): obs.onError(msg);
-                    case Complete: obs.onComplete();
-                }
-            }));            
-            multi.add(accum.subscribe(obs));
-            return multi;
-        };
+        return map(fn).flatten();
     }
 
     //factories
